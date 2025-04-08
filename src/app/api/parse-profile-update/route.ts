@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
          taskPrompt = "Analyze the user message regarding permission to link medical records (Yes/No). Extract the answer. Respond ONLY with JSON: {\"updateNeeded\": boolean, \"profileField\": \"recordPermission\", \"extractedValue\": string | null}. Respond {\"updateNeeded\": false} if unclear.";
         break;
       case 'additionalHealthInfo': // Updated key
-         taskPrompt = "Analyze the user message for any additional health info shared. Extract the info or 'None'. Respond ONLY with JSON: {\"updateNeeded\": boolean, \"profileField\": \"additionalHealthInfo\", \"extractedValue\": string | null}. Respond {\"updateNeeded\": false} if topic seems unrelated.";
+         taskPrompt = "Analyze the user message for any additional health info shared. This will be the last part of the interview so it will close on this. Extract the info or say Not now. Respond ONLY with JSON: {\"updateNeeded\": boolean, \"profileField\": \"additionalHealthInfo\", \"extractedValue\": string | null}. Respond {\"updateNeeded\": false} if topic seems unrelated.";
         break;
       default:
         console.log(`No specific parsing task prompt for step: ${step}`);

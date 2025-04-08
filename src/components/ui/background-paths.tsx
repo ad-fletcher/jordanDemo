@@ -61,12 +61,14 @@ export function BackgroundPaths({
     buttonText = "Begin Journey",
     onStartApp,
     extraContent,
+    interactive = false,
 }: {
     title?: string;
     subtitle?: string;
     buttonText?: string;
     onStartApp?: (name: string) => void;
     extraContent?: React.ReactNode;
+    interactive?: boolean;
 }) {
     const words = title.split(" ");
     const [name, setName] = useState("");
@@ -84,101 +86,103 @@ export function BackgroundPaths({
                 <FloatingPaths position={-1} />
             </div>
 
-            <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 2 }}
-                    className="max-w-4xl mx-auto"
-                >
-                    <h1 className="text-5xl sm:text-6xl md:text-7xl font-light tracking-wide mb-4 letter-spacing-wider">
-                        {words.map((word, wordIndex) => (
-                            <span
-                                key={wordIndex}
-                                className="inline-block mr-4 last:mr-0"
-                            >
-                                {word.split("").map((letter, letterIndex) => (
-                                    <motion.span
-                                        key={`${wordIndex}-${letterIndex}`}
-                                        initial={{ y: 60, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        transition={{
-                                            delay:
-                                                wordIndex * 0.1 +
-                                                letterIndex * 0.03,
-                                            type: "spring",
-                                            stiffness: 100,
-                                            damping: 20,
-                                        }}
-                                        className="inline-block text-[#8B4B3E] dark:text-[#8B4B3E]"
-                                    >
-                                        {letter}
-                                    </motion.span>
-                                ))}
-                            </span>
-                        ))}
-                    </h1>
+            {interactive && (
+                <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 2 }}
+                        className="max-w-4xl mx-auto"
+                    >
+                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-light tracking-wide mb-4 letter-spacing-wider">
+                            {words.map((word, wordIndex) => (
+                                <span
+                                    key={wordIndex}
+                                    className="inline-block mr-4 last:mr-0"
+                                >
+                                    {word.split("").map((letter, letterIndex) => (
+                                        <motion.span
+                                            key={`${wordIndex}-${letterIndex}`}
+                                            initial={{ y: 60, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                delay:
+                                                    wordIndex * 0.1 +
+                                                    letterIndex * 0.03,
+                                                type: "spring",
+                                                stiffness: 100,
+                                                damping: 20,
+                                            }}
+                                            className="inline-block text-[#8B4B3E] dark:text-[#8B4B3E]"
+                                        >
+                                            {letter}
+                                        </motion.span>
+                                    ))}
+                                </span>
+                            ))}
+                        </h1>
 
-                    {subtitle && (
-                        <motion.p
+                        {subtitle && (
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 1, duration: 1 }}
+                                className="mb-10 font-light text-xl text-[#9d8e77] dark:text-[#a59986] tracking-wide"
+                            >
+                                {subtitle}
+                            </motion.p>
+                        )}
+
+                        {extraContent}
+
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1, duration: 1 }}
-                            className="mb-10 font-light text-xl text-[#9d8e77] dark:text-[#a59986] tracking-wide"
+                            transition={{ delay: 1.2, duration: 1 }}
+                            className="mt-8 flex flex-col items-center gap-4 max-w-sm mx-auto"
                         >
-                            {subtitle}
-                        </motion.p>
-                    )}
-
-                    {extraContent}
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.2, duration: 1 }}
-                        className="mt-8 flex flex-col items-center gap-4 max-w-sm mx-auto"
-                    >
-                        <Input
-                            type="text"
-                            placeholder="Enter your name"
-                            value={name}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                                if (e.key === 'Enter' && name.trim()) {
-                                    handleButtonClick();
-                                }
-                            }}
-                            className={cn(
-                                "w-full text-center rounded-lg",
-                                "bg-background/80 dark:bg-neutral-900/80",
-                                "border border-[#c5b299]/50 dark:border-[#6e5f45]/50",
-                                "text-stone-700 dark:text-stone-300",
-                                "placeholder:text-stone-500 dark:placeholder:text-stone-400",
-                                "focus:ring-1 focus:ring-[#a1887f] dark:focus:ring-[#b1a189]",
-                                "focus:border-[#a1887f] dark:focus:border-[#b1a189]",
-                                "transition-colors duration-200"
-                            )}
-                        />
-                        <Button
-                            onClick={handleButtonClick}
-                            variant="ghost"
-                            disabled={!name.trim()}
-                            className="w-full rounded-lg px-8 py-5 text-base font-light tracking-wide
-                                    bg-[#8B4B3E] hover:bg-[#7a3f34] text-white transition-all duration-300 
-                                    shadow-sm border border-[#d8cfbd]/30 hover:shadow-md
-                                    disabled:bg-stone-300 disabled:dark:bg-neutral-700 disabled:cursor-not-allowed"
-                        >
-                            <span className="opacity-90 group-hover:opacity-100 transition-opacity">{buttonText}</span>
-                            <span
-                                className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 
-                                                transition-all duration-300"
+                            <Input
+                                type="text"
+                                placeholder="Enter your name"
+                                value={name}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                                    if (e.key === 'Enter' && name.trim()) {
+                                        handleButtonClick();
+                                    }
+                                }}
+                                className={cn(
+                                    "w-full text-center rounded-lg",
+                                    "bg-background/80 dark:bg-neutral-900/80",
+                                    "border border-[#c5b299]/50 dark:border-[#6e5f45]/50",
+                                    "text-stone-700 dark:text-stone-300",
+                                    "placeholder:text-stone-500 dark:placeholder:text-stone-400",
+                                    "focus:ring-1 focus:ring-[#a1887f] dark:focus:ring-[#b1a189]",
+                                    "focus:border-[#a1887f] dark:focus:border-[#b1a189]",
+                                    "transition-colors duration-200"
+                                )}
+                            />
+                            <Button
+                                onClick={handleButtonClick}
+                                variant="ghost"
+                                disabled={!name.trim()}
+                                className="w-full rounded-lg px-8 py-5 text-base font-light tracking-wide
+                                        bg-[#8B4B3E] hover:bg-[#7a3f34] text-white transition-all duration-300 
+                                        shadow-sm border border-[#d8cfbd]/30 hover:shadow-md
+                                        disabled:bg-stone-300 disabled:dark:bg-neutral-700 disabled:cursor-not-allowed"
                             >
-                                →
-                            </span>
-                        </Button>
+                                <span className="opacity-90 group-hover:opacity-100 transition-opacity">{buttonText}</span>
+                                <span
+                                    className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 
+                                                    transition-all duration-300"
+                                >
+                                    →
+                                </span>
+                            </Button>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            </div>
+                </div>
+            )}
         </div>
     );
 } 

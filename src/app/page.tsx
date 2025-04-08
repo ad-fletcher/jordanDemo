@@ -78,59 +78,75 @@ export default function Home() {
 
   return (
     <>
+      {/* --- Persistent Animated Background --- */}
+      <div className="fixed inset-0 -z-10">
+        <BackgroundPaths /> {/* Render animation unconditionally */}
+      </div>
+      {/* ------------------------------------ */}
+
       {/* --- Splash Screen (Overlay) --- */}
       {!showMainApp && ( // Render splash screen if showMainApp is false
-        <div className="fixed inset-0 z-50"> {/* Use fixed positioning to overlay */} 
-            {/* Loro Piana Style Header */}
-            <div className="relative z-20 w-full bg-[#f5f1e8] dark:bg-[#2b2823]">
-            {/* Top announcement bar */}
-            <div className="w-full py-2 text-center text-xs tracking-wider text-[#6e5f45] dark:text-[#d8cfbd]">
-              Discover personalized wellness at your fingertips
-            </div>
+        <div className="fixed inset-0 z-50 flex flex-col bg-[#f5f1e8] dark:bg-[#2b2823]"> 
+            {/* Loro Piana Style Header - Remove redundant background here */}
+            <div className="relative z-20 w-full flex-shrink-0"> {/* Removed bg here */}
+              {/* Top announcement bar */}
+              <div className="w-full py-2 text-center text-xs tracking-wider text-[#6e5f45] dark:text-[#d8cfbd]">
+                Discover personalized wellness at your fingertips
+              </div>
 
-            {/* Divider Lines */}
-            <div className="px-6">
-              <div className="w-full h-0.5 bg-[#a1887f]"></div> {/* Darker Brown/Taupe Line */}
-              <div className="w-full h-px bg-[#c5b299]"></div> {/* Lighter Taupe Line */}
-            </div>
+              {/* Divider Lines */}
+              <div className="px-6">
+                <div className="w-full h-0.5 bg-[#a1887f]"></div> {/* Darker Brown/Taupe Line */}
+                <div className="w-full h-px bg-[#c5b299]"></div> {/* Lighter Taupe Line */}
+              </div>
 
-            {/* Main header - Simplified */}
-            <div className="w-full py-4 px-6 flex items-center justify-center relative">
-              <div className="flex items-center">
-                <span className="font-serif italic text-xl text-[#916e58]">Health Companion</span>
+              {/* Main header - Simplified */}
+              <div className="w-full py-4 px-6 flex items-center justify-center relative">
+                <div className="flex items-center">
+                  <span className="font-serif italic text-xl text-[#916e58]">Health Companion</span>
+                </div>
               </div>
             </div>
-          </div>
-          {/* --- End Header --- */}
-          <BackgroundPaths
-            title="HEALTH COMPANION" // Customize as needed
-            subtitle="Let's get started. Please enter your name below." // Added subtitle
-            buttonText="Begin Journey"  
-            onStartApp={handleStartApp} // Pass updated handler
-          />
+            {/* --- End Header --- */}
+            
+            {/* Interactive BackgroundPaths takes remaining space */}
+            <div className="flex-grow relative"> {/* Background comes from BackgroundPaths now */}
+              <BackgroundPaths
+                interactive={true}
+                title="HEALTH COMPANION"
+                subtitle="Let's get started. Please enter your name below."
+                buttonText="Begin Journey"
+                onStartApp={handleStartApp}
+              />
+            </div>
         </div>
       )}
 
       {/* --- Original Main Content (Rendered only when showMainApp is true) --- */}
       {showMainApp && (
-        <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden bg-[#f5f1e8] dark:bg-[#2b2823]">
-          <div className="absolute -z-10 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-[100px] animate-pulse" />
+        <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden bg-transparent"> 
+          {/* Remove the pulsing blob background, use BackgroundPaths instead */}
+          {/* <div className="absolute -z-10 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-[100px] animate-pulse" /> */}
 
           {/* Loro Piana Style Header */}
-          <div className="relative z-20 w-full bg-[#f5f1e8] dark:bg-[#2b2823]">
-            {/* Top announcement bar */}
-            <div className="w-full py-2 text-center text-xs tracking-wider text-[#6e5f45] dark:text-[#d8cfbd]">
-              Discover personalized wellness at your fingertips
-            </div>
+          <div className="relative z-20 w-full bg-[#f5f1e8]/80 dark:bg-[#2b2823]/80 backdrop-blur-sm"> {/* Make header slightly transparent/blurred */}
+             {/* Top announcement bar */}
+             <div className="w-full py-2 text-center text-xs tracking-wider text-[#6e5f45] dark:text-[#d8cfbd]">
+               Discover personalized wellness at your fingertips
+             </div>
 
-            {/* Divider Lines */}
-            <div className="px-6">
-              <div className="w-full h-0.5 bg-[#a1887f]"></div> {/* Darker Brown/Taupe Line */}
-              <div className="w-full h-px bg-[#c5b299]"></div> {/* Lighter Taupe Line */}
-            </div>
+             {/* Divider Lines */}
+             <div className="px-6">
+               <div className="w-full h-0.5 bg-[#a1887f]"></div> {/* Darker Brown/Taupe Line */}
+               <div className="w-full h-px bg-[#c5b299]"></div> {/* Lighter Taupe Line */}
+             </div>
 
-            {/* Main header - Display User Name */}
-
+             {/* Main header - Display User Name */}
+             <div className="w-full py-4 px-6 flex items-center justify-center relative">
+               <div className="flex items-center">
+                 <span className="font-serif italic text-xl text-[#916e58]">Health Companion</span>
+               </div>
+             </div>
           </div>
           {/* --- End Header --- */}
 
